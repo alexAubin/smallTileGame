@@ -8,18 +8,20 @@ import pygame.locals
 class Character() :
 
 
-    def __init__(self, spritePath, spriteSize, spritePosition, initPosition) :
+    def __init__(self, spritePath, spritePosition, spriteWidth, spriteHeight, initPosition) :
 
-        self.loadSprite(spritePath, spriteSize, spritePosition)
+        self.loadSprite(spritePath, spriteWidth, spriteHeight, spritePosition)
 
         self.x = initPosition[0]
         self.y = initPosition[1]
         self.orientation   = "front"
         self.currentSprite = self.sprites[self.orientation][0]
         self.moving        = ""
+        self.w = spriteWidth
+        self.h = spriteHeight
 
 
-    def loadSprite(self, path, size, position) :
+    def loadSprite(self, path, w, h, position) :
 
         self.sprites          = {}
         self.sprites["front"] = []
@@ -30,24 +32,24 @@ class Character() :
         spritesImage = pygame.image.load(path)
         spritesWidth, spritesHeight = spritesImage.get_size()
        
-        for i in range(0, 4) :
-            self.sprites["front"].append(self.getSprite(spritesImage, size, i, position))
-        for i in range(4, 8) :
-            self.sprites["right"].append(self.getSprite(spritesImage, size, i, position))
-        for i in range(8, 12) :
-            self.sprites["left"] .append(self.getSprite(spritesImage, size, i, position))
-        for i in range(12,16) :
-            self.sprites["back"] .append(self.getSprite(spritesImage, size, i, position))
+        for i in range(0, 3) :
+            self.sprites["front"].append(self.getSprite(spritesImage, w,h, i, position))
+        for i in range(3, 6) :
+            self.sprites["back"] .append(self.getSprite(spritesImage, w,h, i, position))
+        for i in range(6, 9) :
+            self.sprites["right"].append(self.getSprite(spritesImage, w,h, i, position))
+        for i in range(9,12) :
+            self.sprites["left"] .append(self.getSprite(spritesImage, w,h, i, position))
 
 
-    def getSprite(self, spritesImage, size, i, j) :
-        
-        return spritesImage.subsurface((i * size, (j-1) * size, size, size))
+    def getSprite(self, spritesImage, w,h, i, j) :
+       
+        return spritesImage.subsurface((i * w, (j-1) * h, w, h))
 
 
     def render(self, screen) :
                                                 # Uuuuuuh FIXME
-        screen.blit(self.currentSprite, (self.x * 32,  self.y * 32))
+        screen.blit(self.currentSprite, (self.x * 32,  self.y * 32 - 16))
 
 
     def move(self, direction) :
@@ -55,7 +57,7 @@ class Character() :
         if (self.moving != "") : return
 
         self.moving     = direction
-        self.movingFrom = (self.x, self.y)
+        self.movingStep = 0
 
         if   (direction == "forward" ) : self.orientation = "back"
         elif (direction == "backward") : self.orientation = "front"
@@ -65,29 +67,26 @@ class Character() :
     def update(self) :
 
         if   (self.moving == "forward") :
-            self.y = self.y - 0.1
-            p      = self.y
-            p_init = self.movingFrom[1]
+            self.y = self.y - 1/9.0
         elif (self.moving == "backward") :
-            self.y = self.y + 0.1
-            p      = self.y
-            p_init = self.movingFrom[1]
+            self.y = self.y + 1/9.0
         elif (self.moving == "left") :
-            self.x = self.x - 0.1
-            p      = self.x
-            p_init = self.movingFrom[0]
+            self.x = self.x - 1/9.0
         elif (self.moving == "right") :
-            self.x = self.x + 0.1
-            p      = self.x
-            p_init = self.movingFrom[0]
+            self.x = self.x + 1/9.0
         else :
             return
         
-        spriteId = abs(int((p - int(p_init)) * 4.0))
+        self.movingStep = self.movingStep + 1
+        
+        spriteId   = int(self.movingStep / 3)
 
-        if (spriteId == 4) : 
+        if (spriteId == 3) : 
             spriteId = 0
             self.moving = ""
+            self.x = int(round(self.x))
+            self.y = int(round(self.y))
+
 
         self.currentSprite = self.sprites[self.orientation][spriteId]
             
@@ -249,7 +248,7 @@ def main() :
     myGame = MyGame("test");
 
     m = Map("assets/tileset.png", 32, [ "map_layer1.csv", "map_layer2.csv" ])
-    p = Character("assets/sprites.png", 32, 6, (10,10))
+    p = Character("assets/sprites_trainers.png", 4, 32, 48, (10,10))
 
     while True :
         myGame.mainLoop( p,  [ m, p ] );
