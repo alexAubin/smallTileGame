@@ -159,12 +159,6 @@ class Map() :
 
 
 
-colors = { 
-           "black" : ( 0,  0,  0 ), 
-           "white" : (255,255,255)
-         }
-
-
 
 class MyGame() : 
 
@@ -197,7 +191,7 @@ class MyGame() :
         self.keysHandler(character)
 
         # Clean screen
-        self.screen.fill(colors["black"])
+        self.screen.fill( (0,0,0) )
        
         # Render elements
         for stuff in stuffToRender :
@@ -247,7 +241,7 @@ def main() :
 
     myGame = MyGame("test");
 
-    m = Map("assets/tileset.png", 32, [ "map_layer1.csv", "map_layer2.csv" ])
+    m = Map("assets/tileset.png", 32, [ "map/map_layer1.csv", "map/map_layer2.csv" ])
     p = Character("assets/sprites_trainers.png", 4, 32, 48, (10,10))
 
     while True :
