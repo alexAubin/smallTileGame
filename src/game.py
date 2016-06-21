@@ -96,11 +96,11 @@ class Game() :
             if (keyPressed[pygame.K_UP])    : 
                 dx =  0
                 dy = -1
-                d = "forward"
+                d = "back"
             if (keyPressed[pygame.K_DOWN])  : 
                 dx =  0
                 dy = +1
-                d = "backward"
+                d = "front"
             if (keyPressed[pygame.K_LEFT])  : 
                 dx = -1
                 dy =  0
@@ -109,6 +109,8 @@ class Game() :
                 dx = +1
                 dy =  0
                 d = "right"
+
+            self.hero.look(d)
             
             maskNextTileBot = self.layers[0].getTileWalkability(self.hero.x+dx, self.hero.y+dy)
             maskNextTileTop = self.layers[1].getTileWalkability(self.hero.x+dx, self.hero.y+dy)

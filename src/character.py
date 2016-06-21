@@ -13,10 +13,12 @@ class Character() :
         self.y = initPosition[1]
         self.w = spriteWidth
         self.h = spriteHeight
-        self.orientation   = "front"
-        self.currentSprite = self.sprites[self.orientation][0]
-        self.moving        = ""
-        self.layer         = 'middle'
+        self.orientation       = "front"
+        self.currentSpriteStep = 0
+        self.moving            = ""
+        self.layer             = 'middle'
+
+        self.updateCurrentSprite()
 
 
     def loadSprite(self, path, w, h, position) :
@@ -57,6 +59,12 @@ class Character() :
         screen.blit(self.currentSprite, (self.x * 32,  self.y * 32 - 16))
 
 
+    def look(self, direction) :
+
+        self.orientation = direction
+        
+        self.updateCurrentSprite()
+
     def move(self, direction) :
 
         if (self.moving != "") : return
@@ -64,16 +72,11 @@ class Character() :
         self.moving     = direction
         self.movingStep = 0
 
-        if   (direction == "forward" ) : self.orientation = "back"
-        elif (direction == "backward") : self.orientation = "front"
-        elif (direction == "left")     : self.orientation = "left"
-        elif (direction == "right")    : self.orientation = "right"
-
     def update(self) :
 
-        if   (self.moving == "forward") :
+        if   (self.moving == "back") :
             self.y = self.y - 1/9.0
-        elif (self.moving == "backward") :
+        elif (self.moving == "front") :
             self.y = self.y + 1/9.0
         elif (self.moving == "left") :
             self.x = self.x - 1/9.0
@@ -84,16 +87,17 @@ class Character() :
         
         self.movingStep = self.movingStep + 1
         
-        spriteId   = int(self.movingStep / 3)
+        self.currentSpriteStep = int(self.movingStep / 3)
 
-        if (spriteId == 3) : 
-            spriteId = 0
+        if (self.currentSpriteStep == 3) : 
+            self.currentSpriteStep = 0
             self.moving = ""
             self.x = int(round(self.x))
             self.y = int(round(self.y))
 
-
-        self.currentSprite = self.sprites[self.orientation][spriteId]
+        self.updateCurrentSprite()
             
-
+    def updateCurrentSprite(self):
+        
+        self.currentSprite = self.sprites[self.orientation][self.currentSpriteStep]
 
