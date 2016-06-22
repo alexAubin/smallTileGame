@@ -17,6 +17,7 @@ class Character() :
         self.currentSpriteStep = 0
         self.moving            = ""
         self.layer             = 'middle'
+        self.mapLink           = 0
 
         self.updateCurrentSprite()
 
@@ -49,17 +50,13 @@ class Character() :
 
     def render(self, screen) :
         
-        #if (layer == "bottom") :
-        #    offset = 16
-        #else :
-        #    offset = 0
-        #toDraw = self.currentSprite.subsurface((0, offset, 32, 32))
-        
-        # Uuuuuuh FIXME
-        screen.blit(self.currentSprite, (self.x * 32,  self.y * 32 - 16))
+        tileSize = self.mapLink.tileset.tileSize
+        screen.blit(self.currentSprite, (self.x * tileSize,  self.y * tileSize - 16))
 
 
     def look(self, direction) :
+
+        if (self.moving != "") : return
 
         self.orientation = direction
         
@@ -69,10 +66,20 @@ class Character() :
 
         if (self.moving != "") : return
 
+        if (self.tileIsWalkable(direction) == False) : return
+
         self.moving     = direction
         self.movingStep = 0
+        self.updateCurrentLayer()
 
     def update(self) :
+
+        if (self.moving == "") :
+            return
+        else :
+            self.nextMovingStep()
+
+    def nextMovingStep(self) :
 
         if   (self.moving == "back") :
             self.y = self.y - 1/9.0
@@ -82,8 +89,6 @@ class Character() :
             self.x = self.x - 1/9.0
         elif (self.moving == "right") :
             self.x = self.x + 1/9.0
-        else :
-            return
         
         self.movingStep = self.movingStep + 1
         
@@ -94,10 +99,45 @@ class Character() :
             self.moving = ""
             self.x = int(round(self.x))
             self.y = int(round(self.y))
+            self.updateCurrentLayer()
 
         self.updateCurrentSprite()
-            
-    def updateCurrentSprite(self):
+
+    def tileIsWalkable(self, direction) :
+
+        if   (direction == "back" ) : dx, dy =  0, -1
+        elif (direction == "front") : dx, dy =  0, +1
+        elif (direction == "left" ) : dx, dy = -1, 0
+        elif (direction == "right") : dx, dy = +1, 0
+
+        maskNextTile = self.mapLink.getWalkability(self.x+dx, self.y+dy)
+      
+        if ((maskNextTile[0] == 1) or  (maskNextTile[1] == 1)) :
+            return False
+        else :
+            return True
+ 
+
+    def updateCurrentLayer(self) :
+
+        if (self.moving == "") :
+
+            maskTileTop = self.mapLink.getWalkability(self.x, self.y)[1]
+            if (maskTileTop == 0) : self.layer = 'top'
+
+        else :
+
+            if   (self.moving == "back" ) : dx, dy =  0, -1
+            elif (self.moving == "front") : dx, dy =  0, +1
+            elif (self.moving == "left" ) : dx, dy = -1, 0
+            elif (self.moving == "right") : dx, dy = +1, 0
+
+            maskNextTileTop = self.mapLink.getWalkability(self.x+dx, self.y+dy)[1]
+           
+            if (maskNextTileTop == 2) : self.layer = 'middle'
+
+
+    def updateCurrentSprite(self) :
         
         self.currentSprite = self.sprites[self.orientation][self.currentSpriteStep]
 
