@@ -1,7 +1,7 @@
 
-import csv
 import pygame
 import pygame.locals
+from PIL import Image
 
 
 class Tileset() :
@@ -31,15 +31,24 @@ class Tileset() :
 
     def loadTilesetMask(self, path) :
 
-        self.mask = []
+        im = Image.open(path)
+        pix = im.load()
+        
+        self.mask = [ ]
 
-        with open(path, 'rb') as f :
+        for y in range(0, self.tilesetHeight / self.tileSize) :
+        
+            row = []
+    
+            for x in range(0, self.tilesetWidth / self.tileSize) :
 
-            reader = csv.reader(f)
+                (r, g, b, a) = pix[ (x+0.5)*self.tileSize, (y+0.5)*self.tileSize]
 
-            for row in reader :
+                # Transparent = walkable
+                if   (a == 0) : row.append(0)
+                # Black = block
+                elif (r == 0) : row.append(1)
+                # Else / white = walkable by behind
+                else          : row.append(2)
 
-                self.mask.extend(map(int, row))
-
-
-
+            self.mask.extend(row)

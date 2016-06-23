@@ -111,7 +111,7 @@ class Character() :
         elif (direction == "right") : dx, dy = +1, 0
 
         maskNextTile = self.mapLink.getWalkability(self.x+dx, self.y+dy)
-      
+
         if ((maskNextTile[0] == 1) or  (maskNextTile[1] == 1)) :
             return False
         else :

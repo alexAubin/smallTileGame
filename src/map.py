@@ -47,8 +47,9 @@ class Map() :
             for (x, tileId) in enumerate(row) :
    
                 if (tileId != -1) : 
-                    screen.blit(self.tileset.tiles[tileId], (x*self.tileset.tileSize,
-                                                             y*self.tileset.tileSize))
+                    screen.blit(self.tileset.tiles[tileId], 
+                                (x*self.tileset.tileSize,
+                                 y*self.tileset.tileSize))
 
 
 
