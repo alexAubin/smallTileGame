@@ -32,7 +32,7 @@
         }, 
         {
          "draworder":"topdown",
-         "height":23,
+         "height":0,
          "name":"objects",
          "objects":[
                 {
@@ -52,17 +52,29 @@
                  "type":"Pokeball",
                  "visible":true,
                  "width":32,
-                 "x":320.039235582615,
-                 "y":160.089294774226
+                 "x":320.039,
+                 "y":160.089
+                }, 
+                {
+                 "gid":1,
+                 "height":32,
+                 "id":29,
+                 "name":"heroStart",
+                 "rotation":0,
+                 "type":"heroStart",
+                 "visible":true,
+                 "width":32,
+                 "x":320,
+                 "y":512
                 }],
          "opacity":1,
          "type":"objectgroup",
          "visible":true,
-         "width":20,
+         "width":0,
          "x":0,
          "y":0
         }],
- "nextobjectid":29,
+ "nextobjectid":30,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tileheight":32,

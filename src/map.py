@@ -72,12 +72,14 @@ class Map() :
             
             tileId     = obj["gid"]
             objType    = obj["type"]
-            properties = obj["properties"]
+            properties = obj.get("properties",None)
             name       = obj["name"]
 
-            theObj = strToClass(objType)(name, x, y, tileId, properties)        
-
-            objectLayer[x + y * mapWidth] = theObj
+            if (objType == "heroStart") :
+                self.heroStart = (x,y)
+            else :
+                theObj = strToClass(objType)(name, x, y, tileId, properties)        
+                objectLayer[x + y * mapWidth] = theObj
 
         return objectLayer
 
