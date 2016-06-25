@@ -1,5 +1,5 @@
 
-from src import game, tileset, map, character     
+from src import game, tileset, map, character
 
 
 def main() :

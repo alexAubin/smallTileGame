@@ -1,27 +1,11 @@
 
 import sys
 import json
+import types
 import pygame
 import pygame.locals
 
-
-# Dummy pokeball class for object layer test
-class Pokeball :
-
-    def __init__(self, name, x, y, tileId, properties) :
-
-        pass
-
-
-def strToClass(className):
-    
-    try :
-        return getattr(sys.modules[__name__], className)
-    except AttributeError :
-        raise NameError("Class '%s' doesn't exist." % className)
-
-
-
+from gameObjects import gameObject
 
 class Map() :
 
@@ -78,7 +62,8 @@ class Map() :
             if (objType == "heroStart") :
                 self.heroStart = (x,y)
             else :
-                theObj = strToClass(objType)(name, x, y, tileId, properties)        
+                c = gameObject.strToObjectClass(objType)
+                theObj = c(name, x, y, tileId, properties)        
                 objectLayer[x + y * mapWidth] = theObj
 
         return objectLayer
