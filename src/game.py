@@ -54,6 +54,7 @@ class Game() :
        
         # Render elements
         self.map.render(self.screen, "bot")
+        self.map.render(self.screen, "objects")
         
         if (self.hero.layer == 'middle') :
             self.hero.render(self.screen)

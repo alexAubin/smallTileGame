@@ -20,7 +20,7 @@ class Map() :
 
 
     def load(self, mapJsonPath) :
-        
+
         with open(mapJsonPath) as f :
 
             mapJson = json.load(f)
@@ -30,9 +30,9 @@ class Map() :
         self.height = mapJson["height"]
 
         for layer in mapJson["layers"] :
-            
+
             layerName = layer["name"]
-            
+
             if (layer["type"] == "tilelayer") :
                 layerData = layer["data"]
             else :
@@ -53,7 +53,7 @@ class Map() :
 
             x = int(obj["x"]) / int(obj["width"])
             y = int(obj["y"]) / int(obj["width"])
-            
+
             tileId     = obj["gid"]
             objType    = obj["type"]
             properties = obj.get("properties",None)
@@ -63,7 +63,7 @@ class Map() :
                 self.heroStart = (x,y)
             else :
                 c = gameObject.strToObjectClass(objType)
-                theObj = c(name, x, y, tileId, properties)        
+                theObj = c(name, x, y, self.tileset.tiles[tileId - 1], properties)
                 objectLayer[x + y * mapWidth] = theObj
 
         return objectLayer
@@ -75,7 +75,7 @@ class Map() :
 
         tileIdBot = self.layer["bot"][y*self.width+x] - 1
         tileIdTop = self.layer["top"][y*self.width+x] - 1
-      
+
         return (self.tileset.mask[tileIdBot], self.tileset.mask[tileIdTop])
 
 
@@ -89,12 +89,19 @@ class Map() :
             x = i % self.width
             y = i / self.width
 
-            tileId = tileId - 1
+            if (type(tileId) == int) :
 
-            if (tileId != -1) : 
-                screen.blit(self.tileset.tiles[tileId], 
-                            (x*self.tileset.tileSize,
-                             y*self.tileset.tileSize))
+                tileId = tileId - 1
+
+                if (tileId != -1) :
+                    screen.blit(self.tileset.tiles[tileId],
+                                (x*self.tileset.tileSize,
+                                 y*self.tileset.tileSize))
 
 
+            else :
+
+                if (tileId == None) : continue
+
+                tileId.render(screen, self.tileset.tileSize);
 

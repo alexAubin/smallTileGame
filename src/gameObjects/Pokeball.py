@@ -6,9 +6,14 @@ from gameObject import GameObject as GameObject
 
 class Pokeball(GameObject) :
 
-    def __init__(self, name, x, y, tileId, properties) :
+    def __init__(self, name, x, y, tile, properties) :
 
-        GameObject(name,x,y,tileId,properties)
+        GameObject.__init__(self,name,x,y-1,tile,properties)
+
+    def render(self, screen, tileSize) :
+ 
+        screen.blit(self.tile, (self.x * tileSize,  self.y * tileSize))
+
 
 
 
