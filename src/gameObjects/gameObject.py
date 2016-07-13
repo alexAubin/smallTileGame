@@ -18,12 +18,13 @@ def strToObjectClass(className):
 
 class GameObject() :
 
-    def __init__(self, name, x, y, tile, properties) :
+    def __init__(self, name, x, y, tileInfo, properties) :
 
-        self.name = name
-        self.x    = x
-        self.y    = y
-        self.tile = tile
+        self.name       = name
+        self.x          = x
+        self.y          = y
+        self.tileId     = tileInfo[0]
+        self.tile       = tileInfo[1]
         self.properties = properties
 
 

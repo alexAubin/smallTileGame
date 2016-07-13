@@ -6,9 +6,9 @@ from gameObject import GameObject as GameObject
 
 class Pokeball(GameObject) :
 
-    def __init__(self, name, x, y, tile, properties) :
+    def __init__(self, name, x, y, tileInfo, properties) :
 
-        GameObject.__init__(self,name,x,y-1,tile,properties)
+        GameObject.__init__(self,name,x,y,tileInfo,properties)
 
     def render(self, screen, tileSize) :
  

@@ -63,7 +63,8 @@ class Map() :
                 self.heroStart = (x,y)
             else :
                 c = gameObject.strToObjectClass(objType)
-                theObj = c(name, x, y, self.tileset.tiles[tileId - 1], properties)
+                y = y - 1
+                theObj = c(name, x, y, (tileId, self.tileset.tiles[tileId - 1]), properties)
                 objectLayer[x + y * mapWidth] = theObj
 
         return objectLayer
@@ -73,10 +74,17 @@ class Map() :
 
     def getWalkability(self, x, y) :
 
-        tileIdBot = self.layer["bot"][y*self.width+x] - 1
-        tileIdTop = self.layer["top"][y*self.width+x] - 1
+        i = x + y*self.width
+        tileIdBot    = self.layer["bot"][i]           - 1
+        if (self.layer["objects"][i] != None) :
+            tileIdObject = self.layer["objects"][i].tileId - 1
+        else : 
+            tileIdObject = 0
+        tileIdTop    = self.layer["top"][i]           - 1
 
-        return (self.tileset.mask[tileIdBot], self.tileset.mask[tileIdTop])
+        return (self.tileset.mask[tileIdBot],
+                self.tileset.mask[tileIdObject],
+                self.tileset.mask[tileIdTop])
 
 
 

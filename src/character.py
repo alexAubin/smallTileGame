@@ -112,7 +112,7 @@ class Character() :
 
         maskNextTile = self.mapLink.getWalkability(self.x+dx, self.y+dy)
 
-        if ((maskNextTile[0] == 1) or  (maskNextTile[1] == 1)) :
+        if (1 in maskNextTile) :
             return False
         else :
             return True
@@ -122,7 +122,7 @@ class Character() :
 
         if (self.moving == "") :
 
-            maskTileTop = self.mapLink.getWalkability(self.x, self.y)[1]
+            maskTileTop = self.mapLink.getWalkability(self.x, self.y)[2]
             if (maskTileTop == 0) : self.layer = 'top'
 
         else :
@@ -132,7 +132,7 @@ class Character() :
             elif (self.moving == "left" ) : dx, dy = -1, 0
             elif (self.moving == "right") : dx, dy = +1, 0
 
-            maskNextTileTop = self.mapLink.getWalkability(self.x+dx, self.y+dy)[1]
+            maskNextTileTop = self.mapLink.getWalkability(self.x+dx, self.y+dy)[2]
            
             if (maskNextTileTop == 2) : self.layer = 'middle'
 
