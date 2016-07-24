@@ -86,6 +86,11 @@ class Map() :
                 self.tileset.mask[tileIdObject],
                 self.tileset.mask[tileIdTop])
 
+    def getObject(self, x, y) :
+
+        i = x + y*self.width
+        return self.layer["objects"][i];
+
 
 
     def render(self, screen, layerName) :

@@ -66,11 +66,30 @@ class Character() :
 
         if (self.moving != "") : return
 
+
         if (self.tileIsWalkable(direction) == False) : return
 
         self.moving     = direction
         self.movingStep = 0
         self.updateCurrentLayer()
+
+    def actionKeyHandler(self) :
+
+        # Ignore the action key if character is currently moving
+        if (self.moving != "") :
+            return
+
+        if   (self.orientation == "back" ) : dx, dy =  0, -1
+        elif (self.orientation == "front") : dx, dy =  0, +1
+        elif (self.orientation == "left" ) : dx, dy = -1, 0
+        elif (self.orientation == "right") : dx, dy = +1, 0
+
+        obj = self.mapLink.getObject(self.x+dx, self.y+dy)
+
+        if (obj == None) : 
+            return
+        else :
+            obj.triggerAction()
 
     def update(self) :
 

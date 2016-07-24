@@ -80,7 +80,7 @@ class Game() :
     def keysHandler(self) :
         
         keyPressed = pygame.key.get_pressed()
-       
+
         moveDirection = ""
         if (keyPressed[pygame.K_UP])    : moveDirection = "back"
         if (keyPressed[pygame.K_DOWN])  : moveDirection = "front"
@@ -91,6 +91,8 @@ class Game() :
             self.hero.look(moveDirection)
             self.hero.move(moveDirection)
 
+        if (keyPressed[pygame.K_e]) :
+            self.hero.actionKeyHandler();
 
 
 

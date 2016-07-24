@@ -23,9 +23,16 @@ class GameObject() :
         self.name       = name
         self.x          = x
         self.y          = y
+        self.active     = True
         self.tileId     = tileInfo[0]
         self.tile       = tileInfo[1]
         self.properties = properties
+
+
+    def render(self, screen, tileSize) :
+
+        if (self.active) :
+            screen.blit(self.tile, (self.x * tileSize,  self.y * tileSize))
 
 
 
