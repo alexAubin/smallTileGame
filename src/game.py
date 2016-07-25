@@ -3,6 +3,8 @@ import sys
 import pygame
 import pygame.locals
 
+from view import View
+
 class Game() : 
 
 
@@ -14,10 +16,9 @@ class Game() :
         # Set up FPS clock
         self.fps = 30
         self.fpsClock = pygame.time.Clock()
-
-        # Set up window
-        self.screen = pygame.display.set_mode((20*tileSize, 23*tileSize), 0, 32)
-        pygame.display.set_caption(windowLabel)
+        
+        # Setup a view
+        self.view = View(windowLabel, tileSize, (12,12))
 
         # Init layers
         self.layers = []
@@ -49,19 +50,10 @@ class Game() :
         # Update character
         self.hero.update()
 
-        # Clean screen
-        self.screen.fill( (0,0,0) )
-       
+        self.view.setCenter((self.hero.x, self.hero.y))
+
         # Render elements
-        self.map.render(self.screen, "bot")
-        self.map.render(self.screen, "objects")
-        
-        if (self.hero.layer == 'middle') :
-            self.hero.render(self.screen)
-            self.map. render(self.screen, "top")
-        else:
-            self.map. render(self.screen, "top")
-            self.hero.render(self.screen)
+        self.view.render(self.map, self.hero)
 
         # Update screen
         pygame.display.update()

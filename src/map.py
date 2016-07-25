@@ -71,29 +71,7 @@ class Map() :
 
 
 
-
-    def getWalkability(self, x, y) :
-
-        i = x + y*self.width
-        tileIdBot    = self.layer["bot"][i]           - 1
-        if (self.layer["objects"][i] != None) :
-            tileIdObject = self.layer["objects"][i].tileId - 1
-        else : 
-            tileIdObject = 0
-        tileIdTop    = self.layer["top"][i]           - 1
-
-        return (self.tileset.mask[tileIdBot],
-                self.tileset.mask[tileIdObject],
-                self.tileset.mask[tileIdTop])
-
-    def getObject(self, x, y) :
-
-        i = x + y*self.width
-        return self.layer["objects"][i];
-
-
-
-    def render(self, screen, layerName) :
+    def renderLayer(self, view, layerName) :
 
         layerToRender = self.layer[layerName]
 
@@ -107,14 +85,39 @@ class Map() :
                 tileId = tileId - 1
 
                 if (tileId != -1) :
-                    screen.blit(self.tileset.tiles[tileId],
-                                (x*self.tileset.tileSize,
-                                 y*self.tileset.tileSize))
-
+                    view.blitTile(self.tileset.tiles[tileId], (x,y))
 
             else :
 
                 if (tileId == None) : continue
+                    
+                tileId.render(view, self.tileset.tileSize);
 
-                tileId.render(screen, self.tileset.tileSize);
+
+
+    def getWalkability(self, x, y) :
+
+        if (x < 0) or (x >= self.width) or (y < 0) or (y >= self.height) :
+            return (1,1,1)
+
+        i = x + y*self.width
+        tileIdBot    = self.layer["bot"][i]           - 1
+        if (self.layer["objects"][i] != None) :
+            tileIdObject = self.layer["objects"][i].tileId - 1
+        else : 
+            tileIdObject = 0
+        tileIdTop    = self.layer["top"][i]           - 1
+
+        return (self.tileset.mask[tileIdBot],
+                self.tileset.mask[tileIdObject],
+                self.tileset.mask[tileIdTop])
+
+
+
+    def getObject(self, x, y) :
+
+        i = x + y*self.width
+        return self.layer["objects"][i];
+
+
 

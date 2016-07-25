@@ -48,10 +48,9 @@ class Character() :
         return spritesImage.subsurface((i * w, (j-1) * h, w, h))
 
 
-    def render(self, screen) :
-        
-        tileSize = self.mapLink.tileset.tileSize
-        screen.blit(self.currentSprite, (self.x * tileSize,  self.y * tileSize - 16))
+    def render(self, view) :
+       
+        view.blitTile(self.currentSprite, (self.x,  self.y - 0.5))
 
 
     def look(self, direction) :
@@ -65,7 +64,6 @@ class Character() :
     def move(self, direction) :
 
         if (self.moving != "") : return
-
 
         if (self.tileIsWalkable(direction) == False) : return
 

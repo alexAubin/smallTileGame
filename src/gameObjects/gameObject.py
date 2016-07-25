@@ -29,10 +29,10 @@ class GameObject() :
         self.properties = properties
 
 
-    def render(self, screen, tileSize) :
+    def render(self, view, tileSize) :
 
         if (self.active) :
-            screen.blit(self.tile, (self.x * tileSize,  self.y * tileSize))
+            view.blitTile(self.tile, (self.x, self.y))
 
 
 
