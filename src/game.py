@@ -18,10 +18,7 @@ class Game() :
         self.fpsClock = pygame.time.Clock()
         
         # Setup a view
-        self.view = View(windowLabel, tileSize, (12,12))
-
-        # Init layers
-        self.layers = []
+        self.view = View(windowLabel, tileSize, (16,16))
 
         self.tileSize = tileSize
 
@@ -34,10 +31,8 @@ class Game() :
     def setHero(self, hero) : 
 
         self.hero = hero
-
-        # FIXME MAYBE ? Dirty weird tight coupling
-        self.hero.mapLink = self.map
-
+        self.hero.walkabilityChecker = self.map.getWalkability
+        self.hero.getObject          = self.map.getObject
 
     def mainLoop(self) :
 
@@ -50,6 +45,7 @@ class Game() :
         # Update character
         self.hero.update()
 
+        # Center the view on hero
         self.view.setCenter((self.hero.x, self.hero.y))
 
         # Render elements

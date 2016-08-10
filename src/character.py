@@ -17,8 +17,7 @@ class Character() :
         self.currentSpriteStep = 0
         self.moving            = ""
         self.layer             = 'middle'
-        self.mapLink           = 0
-
+        
         self.updateCurrentSprite()
 
 
@@ -82,7 +81,7 @@ class Character() :
         elif (self.orientation == "left" ) : dx, dy = -1, 0
         elif (self.orientation == "right") : dx, dy = +1, 0
 
-        obj = self.mapLink.getObject(self.x+dx, self.y+dy)
+        obj = self.getObject(self.x+dx, self.y+dy)
 
         if (obj == None) : 
             return
@@ -127,7 +126,7 @@ class Character() :
         elif (direction == "left" ) : dx, dy = -1, 0
         elif (direction == "right") : dx, dy = +1, 0
 
-        maskNextTile = self.mapLink.getWalkability(self.x+dx, self.y+dy)
+        maskNextTile = self.walkabilityChecker(self.x+dx, self.y+dy)
 
         if (1 in maskNextTile) :
             return False
@@ -139,7 +138,7 @@ class Character() :
 
         if (self.moving == "") :
 
-            maskTileTop = self.mapLink.getWalkability(self.x, self.y)[2]
+            maskTileTop = self.walkabilityChecker(self.x, self.y)[2]
             if (maskTileTop == 0) : self.layer = 'top'
 
         else :
@@ -149,7 +148,7 @@ class Character() :
             elif (self.moving == "left" ) : dx, dy = -1, 0
             elif (self.moving == "right") : dx, dy = +1, 0
 
-            maskNextTileTop = self.mapLink.getWalkability(self.x+dx, self.y+dy)[2]
+            maskNextTileTop = self.walkabilityChecker(self.x+dx, self.y+dy)[2]
            
             if (maskNextTileTop == 2) : self.layer = 'middle'
 
